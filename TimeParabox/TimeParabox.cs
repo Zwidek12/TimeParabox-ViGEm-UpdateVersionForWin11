@@ -128,15 +128,17 @@ internal static class TimeParabox {
     }
 
     private static void runExtra(List<string> positional) {
-        if (positional.Count < 2 || !int.TryParse(positional[1], out int id)) {
+        // Hub may be multiple tokens: --extra Inf Exit 10  →  hub="Inf Exit", id=10
+        if (positional.Count < 2 || !int.TryParse(positional[^1], out int id)) {
             Console.WriteLine("Usage: TimeParabox.exe --extra <Hub> <Id>");
             Console.WriteLine("Example: TimeParabox.exe --extra Enter 5");
+            Console.WriteLine("         TimeParabox.exe --extra Inf Exit 10");
             Console.WriteLine("         TimeParabox.exe --extra \"Appendix: Priority\" 2");
             ExtraPuzzles.PrintIndex();
             return;
         }
 
-        string hub = positional[0];
+        string hub = string.Join(' ', positional.Take(positional.Count - 1));
         string resolved = ExtraPuzzles.ResolveHubName(hub);
         if (!resolved.Equals(hub, StringComparison.OrdinalIgnoreCase)) {
             Console.WriteLine($"Hub '{hub}' → '{resolved}'");
