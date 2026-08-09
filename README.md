@@ -91,19 +91,31 @@ Use these guides for everything left:
 
 ### Auto-solve extras (semi-automatic)
 
-We imported **~200** challenge / side / Appendix / Challenge-world / Gallery solutions from the UDLR guide into this build.
+We imported **242** challenge / side / Appendix / Challenge-world / Gallery solutions from the UDLR guide into this build.
 
-**You still enter each puzzle** (level select). The bot only executes the solution:
+**You still enter each puzzle** (level select). The bot only executes the solution.
+
+**One puzzle:**
 
 ```bat
 START_EXTRA.bat
 TimeParabox.exe --extra Enter 5
-TimeParabox.exe --extra Eat 13
-TimeParabox.exe --extra "Appendix: Priority" 2
+TimeParabox.exe --extra Inf Exit 10
 TimeParabox.exe --list-extra
 ```
 
-This is **not** full hands-off 100%: hub walking between extras is not automated yet (that is the hard part). Solutions can also be wrong for your timing — raise `--delay` or fall back to the video guide if a level fails.
+**All extras in order (recommended after finishing the main game):**
+
+```bat
+START_EXTRA_ALL.bat
+START_EXTRA_ALL.bat Challenge
+START_EXTRA_ALL.bat Challenge 35
+START_EXTRA_ALL.bat --delay 50 Clone
+```
+
+For each level the console shows `NEXT: Hub #id` → you enter that puzzle → press **Enter** in the console (or **S** skip / **Q** quit).
+
+This is **not** full hands-off 100%: hub walking between extras is not automated yet. Solutions can also desync — raise `--delay` or fall back to the video guide if a level fails.
 
 Source walkthrough: https://steamcommunity.com/sharedfiles/filedetails/?id=2786724419
 

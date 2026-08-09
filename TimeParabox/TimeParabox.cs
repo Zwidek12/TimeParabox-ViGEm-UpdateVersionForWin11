@@ -21,6 +21,7 @@ internal static class TimeParabox {
 
     public static void Main(string[] args) {
         bool extraMode = false;
+        bool extraAllMode = false;
         bool listExtra = false;
         List<string> positional = new();
 
@@ -30,6 +31,11 @@ internal static class TimeParabox {
                 interKeyDelayMs = delay;
                 intraKeyDelayMs = delay;
                 i++;
+                continue;
+            }
+            if (a is "--extra-all") {
+                extraAllMode = true;
+                extraMode = true;
                 continue;
             }
             if (a is "--extra" or "-e") {
@@ -55,7 +61,9 @@ internal static class TimeParabox {
         Console.WriteLine("TimeParabox (ViGEm / Win11)");
         Console.WriteLine($"Key delay: {interKeyDelayMs} ms (override with --delay N)");
         Console.WriteLine("Game settings: Enter speed 2x, Allow rapid inputs ON");
-        if (extraMode) {
+        if (extraAllMode) {
+            Console.WriteLine("EXTRA-ALL: enter each puzzle yourself; bot solves in sequence.");
+        } else if (extraMode) {
             Console.WriteLine("EXTRA mode: enter the puzzle yourself, then focus the game.");
         } else {
             Console.WriteLine("Start from a fresh save on the title screen (unless resuming).");
@@ -102,6 +110,11 @@ internal static class TimeParabox {
             gameProcess.PriorityClass = ProcessPriorityClass.High;
         }
 
+        if (extraAllMode) {
+            runExtraAll(positional);
+            return;
+        }
+
         if (extraMode) {
             runExtra(positional);
             return;
@@ -117,12 +130,15 @@ internal static class TimeParabox {
               TimeParabox.exe                     any% from title
               TimeParabox.exe Eat 2               resume any% hub/puzzle
               TimeParabox.exe --extra Enter 5     solve one challenge/side/appendix puzzle
+              TimeParabox.exe --extra-all         all extras (you enter each, bot solves)
+              TimeParabox.exe --extra-all Challenge
+              TimeParabox.exe --extra-all Challenge 35
               TimeParabox.exe --list-extra        list imported extra solutions
               TimeParabox.exe --delay 50 ...      slower input
 
             Extra solutions come from the Steam UDLR walkthrough
             (https://steamcommunity.com/sharedfiles/filedetails/?id=2786724419).
-            Enter the puzzle manually (level select), then run --extra.
+            Enter the puzzle manually (level select), then run --extra / --extra-all.
             Full hub auto-nav for extras is NOT implemented yet.
             """);
     }
@@ -134,6 +150,7 @@ internal static class TimeParabox {
             Console.WriteLine("Example: TimeParabox.exe --extra Enter 5");
             Console.WriteLine("         TimeParabox.exe --extra Inf Exit 10");
             Console.WriteLine("         TimeParabox.exe --extra \"Appendix: Priority\" 2");
+            Console.WriteLine("Playlist: TimeParabox.exe --extra-all [Hub] [Id]");
             ExtraPuzzles.PrintIndex();
             return;
         }
@@ -156,13 +173,92 @@ internal static class TimeParabox {
             return;
         }
 
+        solveOneExtra(puzzle);
+        try { pad?.Disconnect(); } catch { /* ignore */ }
+    }
+
+    /// <summary>
+    /// Semi-auto playlist: you enter each level; bot plays the solution.
+    /// Args: none | Hub | Hub Id (resume inclusive).
+    /// Console: Enter=solve, S=skip, Q=quit.
+    /// </summary>
+    private static void runExtraAll(List<string> positional) {
+        List<ExtraPuzzles.ExtraPuzzle> playlist = ExtraPuzzles.ALL.ToList();
+        string? hubFilter = null;
+        int? startId = null;
+
+        if (positional.Count >= 1 && int.TryParse(positional[^1], out int idToken) && positional.Count >= 2) {
+            startId = idToken;
+            hubFilter = string.Join(' ', positional.Take(positional.Count - 1));
+        } else if (positional.Count >= 1) {
+            hubFilter = string.Join(' ', positional);
+        }
+
+        if (hubFilter is not null) {
+            string resolved = ExtraPuzzles.ResolveHubName(hubFilter);
+            if (!resolved.Equals(hubFilter, StringComparison.OrdinalIgnoreCase)) {
+                Console.WriteLine($"Hub '{hubFilter}' → '{resolved}'");
+            }
+            playlist = playlist
+                .Where(p => p.hub.Equals(resolved, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+            if (playlist.Count == 0) {
+                Console.WriteLine($"No extras for hub '{hubFilter}'.");
+                ExtraPuzzles.PrintIndex();
+                return;
+            }
+            if (startId is int sid) {
+                int idx = playlist.FindIndex(p => p.id == sid);
+                if (idx < 0) {
+                    Console.WriteLine($"No {resolved} #{sid} in extras.");
+                    return;
+                }
+                playlist = playlist.Skip(idx).ToList();
+            }
+        }
+
+        Console.WriteLine($"EXTRA-ALL playlist: {playlist.Count} puzzles");
+        Console.WriteLine("For each: enter the level (Esc→Restart if needed), focus the game,");
+        Console.WriteLine("then in THIS console: Enter = solve | S = skip | Q = quit");
+        Stopwatch total = Stopwatch.StartNew();
+        int solved = 0;
+        int skipped = 0;
+
+        for (int i = 0; i < playlist.Count; i++) {
+            ExtraPuzzles.ExtraPuzzle puzzle = playlist[i];
+            Console.WriteLine();
+            Console.WriteLine($"[{i + 1}/{playlist.Count}] NEXT: {puzzle.hub} #{puzzle.id} ({puzzle.kind}) — {puzzle.actions.Length} moves");
+            Console.Write("Ready? [Enter/S/Q] ");
+            string? line = Console.ReadLine()?.Trim();
+            if (line is not null && line.Equals("q", StringComparison.OrdinalIgnoreCase)) {
+                Console.WriteLine("Stopped by user.");
+                break;
+            }
+            if (line is not null && line.Equals("s", StringComparison.OrdinalIgnoreCase)) {
+                Console.WriteLine("Skipped.");
+                skipped++;
+                continue;
+            }
+
+            Console.WriteLine("Solving in 1s — keep the game focused...");
+            Thread.Sleep(1000);
+            solveOneExtra(puzzle);
+            solved++;
+        }
+
+        total.Stop();
+        Console.WriteLine();
+        Console.WriteLine($"EXTRA-ALL done: solved={solved}, skipped={skipped}, left={playlist.Count - solved - skipped}, time={total.Elapsed:g}");
+        try { pad?.Disconnect(); } catch { /* ignore */ }
+    }
+
+    private static void solveOneExtra(ExtraPuzzles.ExtraPuzzle puzzle) {
         Console.WriteLine($"Solving EXTRA {puzzle.hub} #{puzzle.id} ({puzzle.kind}) — {puzzle.actions.Length} moves");
         Stopwatch sw = Stopwatch.StartNew();
         sendCommands(puzzle.actions);
         // Allow clear / exit animation
         Thread.Sleep(2000);
         Console.WriteLine($"Extra puzzle done in {sw.Elapsed:g}.");
-        try { pad?.Disconnect(); } catch { /* ignore */ }
     }
 
     private static void runAnyPercent(List<string> positional) {

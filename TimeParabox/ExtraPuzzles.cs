@@ -225,7 +225,8 @@ public static class ExtraPuzzles {
         new("Challenge", 32, "normal", "<<vv>>^<v<^>^<v<^^^vv>>>>>v>^^vvvv<^<<^>^>vv>v<<<<>>^^^^^>>^^"),
         new("Challenge", 33, "normal", "<vvv>^^^^^^<^>^v>vvv<v<^^^<^><<^^^^^>>v>>>vv<<<<<^<v>>vvv>>>^^^^>^<<<<<<v<^^^^>^<<<v<^<<<^^^^^^>>v>^^>^<<<<<<^<v<>^>>>>^^<<<<v<^^^^<^>>>>vvv>^^^^^<^>vv>>>vvv<<<<v<^^^^^^^^^<<<^^^<<v<^^^^^^<^>^v<vvvv<<^^^^^^^^^<^>>^>vv<vvvv<<^^^^^^^^v<<^>v>^^^<^^<<<v>>>><^>>v<v>^^^>vvvvvv"),
         new("Challenge", 34, "normal", ">>>v>><<^<<<^^^^>^>>>>>v<<v<^>^<<<v<<<^<<v>>>>vvvvvvv<^>^<vv<<<^><vv>v>^^^>^<v<^^<^><^>^>v^>>v<^<v>v<^<vv<v>v>^><<<<^<<<<v<v<^<^>>>^>vvvv<v><^^>vv<v>v>^^<"),
-        new("Challenge", 35, "normal", ">vvv>v<^^<<<<<^^>>>>^^>vvvvv>v<^^<<<^>>>>><<<<<^^>>>>>v>>"),
+        // Challenge 35: Steam Stein — GamePretty/SteamAH path failed in-game
+        new("Challenge", 35, "normal", "<<^>>>>v>^<^><<<vvvvv>>>>>^<<v>>>^>vv^^>vv>v<<>>>>>>^>v<v>v>>"),
         new("Challenge", 36, "normal", "<^^^>^<vv>>>v<<v<^^^>>>vvvv<v<^^^^^vvv<<v>><<^^^^^vv>>>>vv<^<v>>vv<^^^^^^vvv<<v>>>^>vvv<v><<^^<^^^^^vvv<<v><vv>>^^^^^vvvv<v<^^^^^>>>^^<<<<^^^>>^><v<^<<vvvvvvv<v>>>><<^^^^^^^^<<<<^^^>>>>>^v<<<<^<<<vvvvvvv<v>>>>><<^^^^^^^^<<<<^^^>>^>><<v<^<<<<vvvvvvv<v>>>>>><<<<<^^^^^^^^<^^^>>>>>^^"),
         new("Challenge", 37, "normal", "v>>^^^<^>vv>v>>^^<>v<<>^<<v<<^^^>v<v>>><<<v>>>v>>^^<<v<^<^>^<v<v>>>v<v<v><<^<^>v>>v>>v>^^^^vv<<<^^^^^>>>v>>^^^<<<^>v<vv><^<vv<^>v>^^>^^<<v<vv>^^<^>>>vv<<<^^^^^>>>v>>^^^<<<^>v<<v<^v<^^^vv>^<<^^^>v>v^<vv>>><<<<v>>>^>>vv<<<^^^^^>>>v>>^^^<^>v<<<<v<^^^^^^v>>>>>v>>^^^^^"),
         new("Challenge", 38, "side", "vv<<v>v>vv<<<<<>>>>v>>>>^^<^^vvv>v>vv<<<<<>><<<^>vvvvv>vv<^^^^^^^^>^<<<^<vv>v>vv<<<<<<>>>>v>>>>^^<^^>>^^^v<<<vv>>><^^>v<v>>v>>>>^^<^^>>>>^"),
