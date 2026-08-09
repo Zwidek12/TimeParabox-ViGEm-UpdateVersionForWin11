@@ -6,6 +6,8 @@ Upstream installs Scarlet.Crush **ScpVBus**, which often crashes or fails on Win
 
 Solves **156 puzzles** (any% to credits). No game exploits.
 
+> **Honest expectations:** this is meant to *run on Win11*, not to guarantee a perfect hands-off credits run every time. Input works (smoke test moves the player). Mid-run **desyncs still happen** on some PCs — use `--delay`, resume, or a fresh save (see below).
+
 ## Requirements
 
 1. [Patrick's Parabox](https://store.steampowered.com/app/1260520/) (Steam)
@@ -39,6 +41,19 @@ Or run `BUILD.bat`.
 
 Stop the bot: focus the console and press `Ctrl+C`.
 
+### Desync / reliability
+
+Common failure mode: the console keeps printing moves while the in-game position no longer matches (e.g. stuck in **Center** or **Eat**).
+
+What helps:
+
+1. Increase delay: `TimeParabox.exe --delay 50` (or `60`). Default here is **40 ms**; upstream ScpVBus used **17 ms**.
+2. Resume from the next puzzle (see below) instead of restarting the whole TAS from the title if only one hub broke.
+3. Close other overlays / overlays that steal focus; keep the game foreground.
+4. If the save is badly out of sync, start a **new save** from the title screen.
+
+Keyboard/`SendInput` was tried and does **not** work reliably with this Unity build — stick to the virtual pad.
+
 ### Resume after a desync
 
 Enter the next needed puzzle **manually** (Esc → Restart if you are mid-level), then:
@@ -54,24 +69,24 @@ Hubs the TAS visits (subset of puzzles): Intro, Enter, Empty, Eat, Reference, Sw
 
 ### Slower / faster input
 
-Default delay is **40 ms** (safer on ViGEm than upstream 17 ms).
-
 ```bat
 TimeParabox.exe --delay 50
 TimeParabox.exe --delay 30 Eat 5
 ```
 
-If you desync mid-hub, try a higher `--delay` or restart from a fresh save.
+## Why ViGEm?
 
-## Why not keyboard?
-
-Unity in this game does not reliably accept synthetic keyboard (`SendInput`). Upstream always used a virtual gamepad (DPad + A + Start).
+| Approach | Result on Win11 (our testing) |
+| --- | --- |
+| Upstream ScpVBus / SimWinGamePad | Installer / driver often broken |
+| Synthetic keyboard (`SendInput`) | Console “plays”, game ignores input |
+| **ViGEmBus Xbox 360** | Game receives DPad / A / Start |
 
 ## Credits
 
 - Original TAS & sequences: [Aldaviva/TimeParabox](https://github.com/Aldaviva/TimeParabox) (Apache 2.0)
 - Virtual pad: [Nefarius ViGEmBus](https://github.com/nefarius/ViGEmBus) + [Nefarius.ViGEm.Client](https://github.com/nefarius/ViGEm.NET)
-- This Win11/ViGEm port: Zwidek12
+- This Win11/ViGEm port: [Zwidek12](https://github.com/Zwidek12)
 
 ## License
 
