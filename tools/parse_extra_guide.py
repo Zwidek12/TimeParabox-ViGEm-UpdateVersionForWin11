@@ -45,12 +45,16 @@ for hub, body in hubs.items():
         chunk = body[start:end]
 
         normal = re.search(r"Normal:\s*([UDLR\s]+)", chunk)
-        if normal:
+        # Prefer Normal only when the puzzle itself documents alternate paths (e.g. Empty 14),
+        # not when a following puzzle's "Normal:" leaked into this chunk.
+        if normal and re.search(r"(?i)\b(infinity|cycle|epsilon|alternate)\b", chunk[: normal.start() + 20]):
             seq = normal.group(1)
         else:
             chunk2 = re.sub(r"\[Solution by:[^\]]*\]", " ", chunk)
             chunk2 = re.sub(
-                r"(Epsilon|Push against yourself|Confirmed by[^\n]*):", " ", chunk2
+                r"(Epsilon|Push against yourself|Confirmed by[^\n]*|Infinity|Cycle|Normal|Alternate):",
+                " ",
+                chunk2,
             )
             tokens = []
             for tok in re.findall(r"[A-Za-z:\[\]]+|\d+", chunk2):
@@ -59,7 +63,8 @@ for hub, body in hubs.items():
                 elif tokens:
                     break
             seq = " ".join(tokens)
-
+            if not seq and normal:
+                seq = normal.group(1)
         seq = seq.strip()
         if not seq or not re.search(r"[UDLR]", seq):
             continue
