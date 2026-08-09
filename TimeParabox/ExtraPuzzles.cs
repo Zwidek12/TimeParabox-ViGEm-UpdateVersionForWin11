@@ -35,6 +35,7 @@ public static class ExtraPuzzles {
         // Alternate UDLR (SteamAH / mirror guides) — geerky42 path failed in ViGEm testing
         new("Reference", 11, "side", ">vvv>^<<<vv>vv^<^^^^>>v>><<<<<^<v<^^>^>vvv<<v>v>^^^^<^>>>v>^^v>>v><^<<<<<^^^>^^vvvvv>v<<<<<^<vv<v"),
         new("Reference", 12, "side", "v<<<v>>v>^^vv>^^>^<<<>>^<vvv>v<^<vv^^^>^^<^^<v<<>^^^^>^^<^^>v<<<<^^<<<"),
+        new("Swap", 2, "normal", "vvv>>^<<<<<v>>^>vv^>>^>^<<<<v<^>>>>>^<<<<<<<v<^^^^^^^<<vvv<v>>^>vvv>v<v<^^<^>>v>^v>><<<<<vv"),
         new("Swap", 3, "challenge", "v>>>^<v<^^<<^>>>>>><<<<^>>vvv>v<<^<vv^^^^>>>>>v>^^^^^^>>vvv>v<<^<vvv<v><"),
         new("Swap", 4, "challenge", "^^^>^^<vvv>v<v<<^^^>^^<vvvv<<v>v>>^v<<^>v>^^^^>^^<<<vv<<<<^>>>v>^<^>>>vvv^^>>^<^<v>v<<>vvv^^^^^<<<vv>>>v>^>^<<<<<v<^>^<<<>>>>v>>v<^^<^>^>vvvvvvvv"),
         new("Swap", 5, "challenge", "v>v>^>^^^<<vv<<<v>>>><<^^^<v<v>>>>><vv>^<^>>><>^>>>>vv>v<<<^<<^^>v^>>>v<^<<v^>>v<^<vvvv>v<>v<>v<v<^^^^^<^>v>^^^<<v>vvvv>^^^<v>>v>^^>^<<<<<<vvvv<^>v>^^^>"),
