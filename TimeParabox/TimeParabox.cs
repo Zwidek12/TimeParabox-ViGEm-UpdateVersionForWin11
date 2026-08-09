@@ -20,21 +20,46 @@ internal static class TimeParabox {
     private static IXbox360Controller? pad;
 
     public static void Main(string[] args) {
+        bool extraMode = false;
+        bool listExtra = false;
         List<string> positional = new();
+
         for (int i = 0; i < args.Length; i++) {
-            if (args[i] is "--delay" or "-d" && i + 1 < args.Length && int.TryParse(args[i + 1], out int delay)) {
+            string a = args[i];
+            if (a is "--delay" or "-d" && i + 1 < args.Length && int.TryParse(args[i + 1], out int delay)) {
                 interKeyDelayMs = delay;
                 intraKeyDelayMs = delay;
                 i++;
                 continue;
             }
-            positional.Add(args[i]);
+            if (a is "--extra" or "-e") {
+                extraMode = true;
+                continue;
+            }
+            if (a is "--list-extra") {
+                listExtra = true;
+                continue;
+            }
+            if (a is "--help" or "-h" or "/?") {
+                printHelp();
+                return;
+            }
+            positional.Add(a);
+        }
+
+        if (listExtra) {
+            ExtraPuzzles.PrintIndex();
+            return;
         }
 
         Console.WriteLine("TimeParabox (ViGEm / Win11)");
         Console.WriteLine($"Key delay: {interKeyDelayMs} ms (override with --delay N)");
         Console.WriteLine("Game settings: Enter speed 2x, Allow rapid inputs ON");
-        Console.WriteLine("Start from a fresh save on the title screen (unless resuming).");
+        if (extraMode) {
+            Console.WriteLine("EXTRA mode: enter the puzzle yourself, then focus the game.");
+        } else {
+            Console.WriteLine("Start from a fresh save on the title screen (unless resuming).");
+        }
 
         try {
             ViGEmClient client = new();
@@ -72,6 +97,63 @@ internal static class TimeParabox {
             gameProcess.PriorityClass = ProcessPriorityClass.High;
         }
 
+        if (extraMode) {
+            runExtra(positional);
+            return;
+        }
+
+        runAnyPercent(positional);
+    }
+
+    private static void printHelp() {
+        Console.WriteLine("""
+            TimeParabox (ViGEm)
+
+              TimeParabox.exe                     any% from title
+              TimeParabox.exe Eat 2               resume any% hub/puzzle
+              TimeParabox.exe --extra Enter 5     solve one challenge/side/appendix puzzle
+              TimeParabox.exe --list-extra        list imported extra solutions
+              TimeParabox.exe --delay 50 ...      slower input
+
+            Extra solutions come from the Steam UDLR walkthrough
+            (https://steamcommunity.com/sharedfiles/filedetails/?id=2786724419).
+            Enter the puzzle manually (level select), then run --extra.
+            Full hub auto-nav for extras is NOT implemented yet.
+            """);
+    }
+
+    private static void runExtra(List<string> positional) {
+        if (positional.Count < 2 || !int.TryParse(positional[1], out int id)) {
+            Console.WriteLine("Usage: TimeParabox.exe --extra <Hub> <Id>");
+            Console.WriteLine("Example: TimeParabox.exe --extra Enter 5");
+            Console.WriteLine("         TimeParabox.exe --extra \"Appendix: Priority\" 2");
+            ExtraPuzzles.PrintIndex();
+            return;
+        }
+
+        string hub = positional[0];
+        ExtraPuzzles.ExtraPuzzle? puzzle = ExtraPuzzles.Find(hub, id);
+        if (puzzle is null) {
+            Console.WriteLine($"No extra solution for hub='{hub}' id={id}");
+            Console.WriteLine("Close matches:");
+            foreach (ExtraPuzzles.ExtraPuzzle p in ExtraPuzzles.ALL.Where(p =>
+                         p.hub.Contains(hub, StringComparison.OrdinalIgnoreCase) ||
+                         hub.Contains(p.hub, StringComparison.OrdinalIgnoreCase))) {
+                Console.WriteLine($"  {p.hub} {p.id} ({p.kind})");
+            }
+            return;
+        }
+
+        Console.WriteLine($"Solving EXTRA {puzzle.hub} #{puzzle.id} ({puzzle.kind}) — {puzzle.actions.Length} moves");
+        Stopwatch sw = Stopwatch.StartNew();
+        sendCommands(puzzle.actions);
+        // Allow clear / exit animation
+        Thread.Sleep(2000);
+        Console.WriteLine($"Extra puzzle done in {sw.Elapsed:g}.");
+        try { pad?.Disconnect(); } catch { /* ignore */ }
+    }
+
+    private static void runAnyPercent(List<string> positional) {
         Stopwatch stopwatch = Stopwatch.StartNew();
 
         string? startingHubName = positional.ElementAtOrDefault(0);

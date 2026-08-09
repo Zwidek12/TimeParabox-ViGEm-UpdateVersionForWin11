@@ -89,6 +89,24 @@ Use these guides for everything left:
 
 **Typical leftovers after TAS:** red-border challenges in each hub, blue side puzzles, then Challenge / Gallery / Appendix (Priority, Extrude, Inner Push) for *Perfect Parabox* and *Alternate universes*.
 
+### Auto-solve extras (semi-automatic)
+
+We imported **~200** challenge / side / Appendix / Challenge-world / Gallery solutions from the UDLR guide into this build.
+
+**You still enter each puzzle** (level select). The bot only executes the solution:
+
+```bat
+START_EXTRA.bat
+TimeParabox.exe --extra Enter 5
+TimeParabox.exe --extra Eat 13
+TimeParabox.exe --extra "Appendix: Priority" 2
+TimeParabox.exe --list-extra
+```
+
+This is **not** full hands-off 100%: hub walking between extras is not automated yet (that is the hard part). Solutions can also be wrong for your timing — raise `--delay` or fall back to the video guide if a level fails.
+
+Source walkthrough: https://steamcommunity.com/sharedfiles/filedetails/?id=2786724419
+
 ## Why ViGEm?
 
 | Approach | Result on Win11 (our testing) |
