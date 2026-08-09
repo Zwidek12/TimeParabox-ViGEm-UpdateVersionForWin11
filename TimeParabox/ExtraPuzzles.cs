@@ -278,6 +278,8 @@ public static class ExtraPuzzles {
             ["Appendix Inner"] = "Appendix: Inner Push",
             ["Inner Push"] = "Appendix: Inner Push",
             ["Inner"] = "Appendix: Inner Push",
+            ["Inf Exit"] = "Infinite Exit",
+            ["Inf Enter"] = "Infinite Enter",
         };
         if (aliases.TryGetValue(hub.Trim(), out string? aliased)) return aliased;
 
