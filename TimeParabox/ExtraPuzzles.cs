@@ -145,6 +145,7 @@ public static class ExtraPuzzles {
         new("Wall", 9, "challenge", "vv<<<<^>>v<^>>v<^^^>vvvvv^^<^>^>>>>>v<<^>v<<^>vvv<^^^^^v>v<^^<vvvvvvv>>>"),
         new("Wall", 10, "challenge", "v<<<^<^>>>^<<^<vv<vvv>>>>>>v>^^^><<v<^>^^>>>>>>>vv"),
         new("Wall", 11, "challenge", "^^^<<v<v>^>v>vvv<<<<<>^^v>v<<^^^>>>>vv<vv>^<^><<<<v<<<<^<vv"),
+        new("Wall", 12, "normal", "v>>^<vv>^^^^>>>^<<<vvvvv<^>^<v<^>^<v<^>^<v<^>^^^>>>vvvv>>>vv"),
         new("Wall", 13, "challenge", "v<<<^^v>>>>>>><v<vv>^^<<^>>>>^<vvvv^^^^>>vvvv>v<<<"),
         new("Wall", 14, "challenge", "v<^>v>^^<^>>>v<^>v<vvv>^^^^>^<<>>^>vvvv^^^^<^<<<v"),
         new("Wall", 15, "side", "^^>>>>v<^>v<vvv<<<^>v^^>>^<<<^>v<v>v>^^^"),
