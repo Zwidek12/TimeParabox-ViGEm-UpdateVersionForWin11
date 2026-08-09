@@ -1,0 +1,13 @@
+bin/
+obj/
+publish/
+*.user
+*.suo
+.vs/
+packages.lock.json
+*.pdb
+*.dll
+!ManagedWinapiNativeHelper.dll
+*.exe
+*.log
+.DS_Store
