@@ -90,7 +90,8 @@ public static class ExtraPuzzles {
         new("Transfer", 28, "side", "^^<^<<<vv>vv>vv<^^>^<^<<<vv>v>>>v>>^<<v<^<^<^^>>>v>>>vvvv<^^<<v>>^v^^<"),
         new("Transfer", 29, "side", "^>^^>vvvv>v<<<^^^^^<vvvvvv>vvv<<<>>^^^>><>^^<v>v<>>"),
         new("Open", 4, "challenge", "v<<<v>>v>^^^^<<<v>>v>>>v<v<^^^^>^<<<^<v>v<>>>vvvvvvv"),
-        new("Open", 5, "challenge", "^^>>>^>vvvvv<<<<^^^^<<^<vvv>>>>>>>vvvv<vv><^^>^^<vv^^^^>>>>>>vvvvv>v>^>^<>>"),
+        // Open 5: Steam aoJim alternate (was GamePretty geerky42)
+        new("Open", 5, "challenge", "^^>>>^>vvvvv><<^<vvv>v<vvvvv<vv><^^>^^<<vv^^^^^^^>>>>v>>>"),
         new("Open", 7, "challenge", "v>>>>>>><<<<<>^<<<v><<>>>>^^<<<"),
         new("Open", 8, "challenge", ">>>><<<<<>>>>>>><<<<<<^^^^<vv>>^<^^>v<vvvvvv<^>>>>>><<<^^"),
         new("Open", 9, "challenge", ">vv<<<^<^^>vv>v<<^^^v>v<v<^<^<^^>>>>v<<<v<^^^v<>v>^>^<<<<<^^>>>>>^^<v>vvv<<^>>>^^<<v>vv<<^>>"),
