@@ -80,14 +80,19 @@ internal static class TimeParabox {
             Thread.Sleep(250);
         }
 
-        Console.WriteLine("Smoke test: DPad Left/Right in 2s...");
-        Thread.Sleep(2000);
-        sendCommand(Xbox360Button.Left);
-        Thread.Sleep(300);
-        sendCommand(Xbox360Button.Right);
-        Thread.Sleep(500);
-        Console.WriteLine("If the player did not move, press Ctrl+C and check ViGEm / focus.");
-        Thread.Sleep(1000);
+        if (!extraMode) {
+            Console.WriteLine("Smoke test: DPad Left/Right in 2s...");
+            Thread.Sleep(2000);
+            sendCommand(Xbox360Button.Left);
+            Thread.Sleep(300);
+            sendCommand(Xbox360Button.Right);
+            Thread.Sleep(500);
+            Console.WriteLine("If the player did not move, press Ctrl+C and check ViGEm / focus.");
+            Thread.Sleep(1000);
+        } else {
+            Console.WriteLine("EXTRA: no smoke test (would break the puzzle). Starting in 2s...");
+            Thread.Sleep(2000);
+        }
 
         using (Process selfProcess = Process.GetCurrentProcess()) {
             selfProcess.PriorityClass = ProcessPriorityClass.High;
