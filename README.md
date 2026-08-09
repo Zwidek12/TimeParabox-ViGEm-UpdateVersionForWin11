@@ -74,6 +74,21 @@ TimeParabox.exe --delay 50
 TimeParabox.exe --delay 30 Eat 5
 ```
 
+## After the bot (remaining puzzles / 100%)
+
+TimeParabox only does **any% to credits** (~156 puzzles). It skips challenge rooms (red), side puzzles (blue), Gallery, Challenge world, and Appendix.
+
+Use these guides for everything left:
+
+| Guide | What it covers |
+| --- | --- |
+| [100% All Puzzles Walkthrough (Steam — videos per world)](https://steamcommunity.com/sharedfiles/filedetails/?id=2791010213) | Every world + challenges + sides + Appendix (best starting point) |
+| [Direction input walkthrough + achievements (Steam)](https://steamcommunity.com/sharedfiles/filedetails/?id=2786724419) | Text solutions (UDLR) + which levels unlock which ACH |
+| [Same walkthrough on GamePretty](https://gamepretty.com/patricks-parabox-walkthrough-all-achievements-levels-guide/) | Mirror of the direction/ACH guide |
+| [Full game 100% video (no commentary)](https://steamcommunity.com/sharedfiles/filedetails/?id=2988824269) | One long video with chapter timestamps |
+
+**Typical leftovers after TAS:** red-border challenges in each hub, blue side puzzles, then Challenge / Gallery / Appendix (Priority, Extrude, Inner Push) for *Perfect Parabox* and *Alternate universes*.
+
 ## Why ViGEm?
 
 | Approach | Result on Win11 (our testing) |
