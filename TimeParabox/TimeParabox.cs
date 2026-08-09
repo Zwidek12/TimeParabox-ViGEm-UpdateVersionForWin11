@@ -132,15 +132,20 @@ internal static class TimeParabox {
         }
 
         string hub = positional[0];
-        ExtraPuzzles.ExtraPuzzle? puzzle = ExtraPuzzles.Find(hub, id);
+        string resolved = ExtraPuzzles.ResolveHubName(hub);
+        if (!resolved.Equals(hub, StringComparison.OrdinalIgnoreCase)) {
+            Console.WriteLine($"Hub '{hub}' → '{resolved}'");
+        }
+
+        ExtraPuzzles.ExtraPuzzle? puzzle = ExtraPuzzles.Find(resolved, id);
         if (puzzle is null) {
-            Console.WriteLine($"No extra solution for hub='{hub}' id={id}");
-            Console.WriteLine("Close matches:");
-            foreach (ExtraPuzzles.ExtraPuzzle p in ExtraPuzzles.ALL.Where(p =>
-                         p.hub.Contains(hub, StringComparison.OrdinalIgnoreCase) ||
-                         hub.Contains(p.hub, StringComparison.OrdinalIgnoreCase))) {
+            Console.WriteLine($"No extra solution for hub='{hub}' (resolved '{resolved}') id={id}");
+            Console.WriteLine("Same id in other hubs:");
+            foreach (ExtraPuzzles.ExtraPuzzle p in ExtraPuzzles.ALL.Where(p => p.id == id)) {
                 Console.WriteLine($"  {p.hub} {p.id} ({p.kind})");
             }
+            Console.WriteLine("Hubs:");
+            ExtraPuzzles.PrintIndex();
             return;
         }
 

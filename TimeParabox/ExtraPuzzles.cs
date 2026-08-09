@@ -214,11 +214,75 @@ public static class ExtraPuzzles {
         new("Appendix: Inner Push", 8, "challenge", "^^^^^^^>^<<<vvv"),
     };
 
-    public static ExtraPuzzle? Find(string hub, int id) =>
-        ALL.FirstOrDefault(p => p.hub.Equals(hub, StringComparison.OrdinalIgnoreCase) && p.id == id);
+    public static ExtraPuzzle? Find(string hub, int id) {
+        string resolved = ResolveHubName(hub);
+        return ALL.FirstOrDefault(p => p.hub.Equals(resolved, StringComparison.OrdinalIgnoreCase) && p.id == id);
+    }
 
-    public static IEnumerable<ExtraPuzzle> ForHub(string hub) =>
-        ALL.Where(p => p.hub.Equals(hub, StringComparison.OrdinalIgnoreCase));
+    public static IEnumerable<ExtraPuzzle> ForHub(string hub) {
+        string resolved = ResolveHubName(hub);
+        return ALL.Where(p => p.hub.Equals(resolved, StringComparison.OrdinalIgnoreCase));
+    }
+
+    /// <summary>Fix common typos / short names (e.g. Refrence → Reference).</summary>
+    public static string ResolveHubName(string hub) {
+        if (string.IsNullOrWhiteSpace(hub)) return hub;
+
+        ExtraPuzzle? exact = ALL.FirstOrDefault(p => p.hub.Equals(hub, StringComparison.OrdinalIgnoreCase));
+        if (exact is not null) return exact.hub;
+
+        // Known aliases / typos
+        Dictionary<string, string> aliases = new(StringComparer.OrdinalIgnoreCase) {
+            ["Refrence"] = "Reference",
+            ["Referance"] = "Reference",
+            ["Ref"] = "Reference",
+            ["App Priority"] = "Appendix: Priority",
+            ["Appendix Priority"] = "Appendix: Priority",
+            ["Priority"] = "Appendix: Priority",
+            ["App Extrude"] = "Appendix: Extrude",
+            ["Appendix Extrude"] = "Appendix: Extrude",
+            ["Extrude"] = "Appendix: Extrude",
+            ["App Inner"] = "Appendix: Inner Push",
+            ["Appendix Inner"] = "Appendix: Inner Push",
+            ["Inner Push"] = "Appendix: Inner Push",
+            ["Inner"] = "Appendix: Inner Push",
+        };
+        if (aliases.TryGetValue(hub.Trim(), out string? aliased)) return aliased;
+
+        string[] hubs = ALL.Select(p => p.hub).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
+
+        string? starts = hubs.FirstOrDefault(h =>
+            h.StartsWith(hub, StringComparison.OrdinalIgnoreCase) ||
+            hub.StartsWith(h, StringComparison.OrdinalIgnoreCase));
+        if (starts is not null) return starts;
+
+        string? contains = hubs.FirstOrDefault(h =>
+            h.Contains(hub, StringComparison.OrdinalIgnoreCase) ||
+            hub.Contains(h, StringComparison.OrdinalIgnoreCase));
+        if (contains is not null) return contains;
+
+        // Edit distance ≤ 2 (catches Refrence / Referance / etc.)
+        string? fuzzy = hubs
+            .Select(h => (name: h, dist: EditDistance(hub.ToLowerInvariant(), h.ToLowerInvariant())))
+            .Where(x => x.dist <= 2)
+            .OrderBy(x => x.dist)
+            .Select(x => x.name)
+            .FirstOrDefault();
+        return fuzzy ?? hub;
+    }
+
+    private static int EditDistance(string a, string b) {
+        int[,] d = new int[a.Length + 1, b.Length + 1];
+        for (int i = 0; i <= a.Length; i++) d[i, 0] = i;
+        for (int j = 0; j <= b.Length; j++) d[0, j] = j;
+        for (int i = 1; i <= a.Length; i++) {
+            for (int j = 1; j <= b.Length; j++) {
+                int cost = a[i - 1] == b[j - 1] ? 0 : 1;
+                d[i, j] = Math.Min(Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1), d[i - 1, j - 1] + cost);
+            }
+        }
+        return d[a.Length, b.Length];
+    }
 
     public static void PrintIndex() {
         Console.WriteLine($"Extra solutions: {ALL.Count}");
