@@ -30,6 +30,7 @@ public static class ExtraPuzzles {
         new("Reference", 4, "challenge", "^<<<v>>v>^^>^<<vvv<<<<^<<^^^^^vvvv<<<^<<>>>>v>>"),
         new("Reference", 5, "challenge", "<<v<^^^<^>>><v<v>>v>^>^<<<<^<vv>>>^^^^<^^<<"),
         new("Reference", 6, "challenge", "^^>>vv<v>><<v>>v>^^^^^vvvv>^<v<^^<^>^>>vv>><^<v<v>vv<"),
+        new("Reference", 7, "challenge", "<vvvv<^v>>>^<<v<^^^vv<^>>>>><<<<<^<<v>^^vvvv^^^vv<<<<<<^<<^>vvvvvvvv<<<<^^"),
         new("Reference", 10, "challenge", ">>>>>^^>>>>>>v<<<v<^<>>^<<>vvvv>>>>^<<<<<v<^^^<<<<v<^>vvvvv>vv<>^^<<vvvv>v<v<^^<^>vvv>vvvv<vvv>v<^<vvv^<v>^>^^^^^^^>^^vvvv<<vv>^^^^>^^^^^^^"),
         new("Reference", 11, "side", "v<<<^>>>>vvv>^<<<vv>vv^<<^^^^>>>v>><<v<^^<^>v>^^^v>>v><^<<<<<^^^>^^vvvvv>v<<<<<^<vv<v"),
         new("Reference", 12, "side", "v<<<v>>v>^^vv>^^>^<<<>>^<vvv>v<^<vv^^^>^^<^^<v<<>^^^^>^^<^^>v<<<<^^<<<"),

@@ -28,7 +28,8 @@ for hub, body in hubs.items():
     # Puzzle ids may be mid-line: "1 ... 2 [Solution by:] ..."
     matches = list(
         re.finditer(
-            r"(?:^|[\n\s])(\d+)\s*((?:\[[^\]]+\]\s*)*)(?=(?:\[Solution|[UDLR]))",
+            # Allow notes like "(Available after 9)" between tags and the solution
+            r"(?:^|[\n\s])(\d+)\s*((?:\[[^\]]+\]\s*|\([^)]*\)\s*)*)(?=(?:\[Solution|[UDLR]))",
             body,
         )
     )
